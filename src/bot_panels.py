@@ -1,9 +1,12 @@
 from telebot import types
 
+
+from settings import *
+
 # Основное меню
-launch_button = types.InlineKeyboardButton(text='\U0001F680 Запустить виртуальную ракету', callback_data='lunch')
-news_button = types.InlineKeyboardButton(text='\U0001F4F0 Опубликовать новость', callback_data='publish')
-help_button = types.InlineKeyboardButton(text='\U0001F691 Помощь', callback_data='help')
+launch_button = types.KeyboardButton(text='\U0001F680 {}'.format(LAUNCH_BUTTON_TEXT.capitalize()))
+news_button = types.KeyboardButton(text='\U0001F4F0 {}'.format(PUBLISH_BUTTON_TEXT.capitalize()))
+help_button = types.KeyboardButton(text='\U0001F691 {}'.format(HELP_BUTTON_TEXT.capitalize()))
 
 
 main_panel = types.ReplyKeyboardMarkup(True, False, row_width=2)
