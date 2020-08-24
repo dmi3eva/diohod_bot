@@ -4,7 +4,7 @@ from enum import Enum
 
 from settings import *
 from collections import defaultdict
-from vedis import Vedis
+
 
 class State(Enum):
     MENU = 0

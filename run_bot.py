@@ -4,7 +4,8 @@ from configuration import *
 from bot_panels import *
 from controller import *
 from planet import *
-from executor import *
+from planet.warehouse import *
+from converter import *
 
 
 bot = telebot.TeleBot(API_TOKEN)
@@ -25,7 +26,15 @@ def start_message(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
-    print("THIS")
+    for _data, _planet in CALL_PLANET_CORRESPONDENCE.items():
+        if call.data == _data:
+            controller.users[call.message.from_user.id].planet = _planet
+            controller.users[call.message.from_user.id].state == State.RESEARCH
+            bot.send_message(call.message.chat.id, _planet.mission.text, parse_mode="Markdown")
+            illustration = _planet.mission.get_illustration()
+            if illustration is not None:
+                bot.send_photo(call.message.chat.id, illustration)
+            break
 
 
 @bot.message_handler(content_types=['text'])
