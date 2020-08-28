@@ -12,8 +12,8 @@ mission_01 = Mission(
     \nПрограмму пишите прямо в сообщении.""",
     os.path.join(MISSIONS_IMG, 'planet_01.png')
 )
-planet_01 = Planet(width=5, height=5, base_x=1, base_y=0, mission=mission_01)
-planet_01.area[1][0].append(idol)
+planet_01 = Planet(width=5, height=5, base_x=1, base_y=0, shape=PlanetShape.SQUARE, mission=mission_01)
+planet_01.area[2][1] = idol
 
 
 CALL_PLANET_CORRESPONDENCE = {
