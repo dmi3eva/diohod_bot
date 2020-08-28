@@ -68,7 +68,15 @@ class Shuttle:
 
     def execute_rotate(self, lines):
         rotate = parse_rotate(lines)
-        self.direction = rotate.direction
+        if rotate.direction is not None:
+            self.direction = rotate.direction
+        else:
+            self.direction = {
+                Compass.NORTH: Compass.EAST,
+                Compass.WEST: Compass.NORTH,
+                Compass.EAST: Compass.SOUTH,
+                Compass.SOUTH: Compass.WEST
+            }[self.direction]
         self.time += 1
         self.execute(rotate.remain)
 

@@ -156,6 +156,7 @@ def parse_rotate(lines):
         'north': Compass.NORTH,
         'west': Compass.WEST,
         'east': Compass.EAST,
-        'south': Compass.SOUTH
+        'south': Compass.SOUTH,
+        '': None
     }[direction_text]
     return Rotate(direction, lines[1:])
