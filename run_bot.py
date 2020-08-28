@@ -3,9 +3,11 @@ import telebot
 from configuration import *
 from bot_panels import *
 from controller import *
-from planet import *
+
 from planet.warehouse import *
 from converter import *
+from error import *
+from shuttle import Shuttle
 
 
 bot = telebot.TeleBot(API_TOKEN)
@@ -28,8 +30,8 @@ def start_message(message):
 def callback_worker(call):
     for _data, _planet in CALL_PLANET_CORRESPONDENCE.items():
         if call.data == _data:
-            controller.users[call.message.from_user.id].planet = _planet
-            controller.users[call.message.from_user.id].state == State.RESEARCH
+            controller.users[call.message.chat.id].planet = _planet
+            controller.users[call.message.chat.id].state == State.RESEARCH
             bot.send_message(call.message.chat.id, _planet.mission.text, parse_mode="Markdown")
             illustration = _planet.mission.get_illustration()
             if illustration is not None:
@@ -75,6 +77,64 @@ def start(message):
             # controller.users[message.from_user.id].name = message.text
             controller.set_user(message.from_user.id, Property.NAME, message.text)
             bot.send_message(TEACHER_CHANNEL, text,  parse_mode="Markdown")
+        # Режим ИССЛЕДОВАНИЯ
+        if controller.users[message.from_user.id].state == State.RESEARCH:
+            # Программа для учителей
+            name = controller.users[message.from_user.id].name
+            name_for_news = '*{}*'.format(name)
+            news_text = '{}:\n```{}```'.format(name_for_news, '\n' + message.text)
+            bot.send_message(TEACHER_CHANNEL, news_text, parse_mode="Markdown")
 
+            # Отправляем диоход
+            controller.users[message.from_user.id].state = State.MENU
+            user_planet = controller.users[message.from_user.id].planet
+            user_shuttle = Shuttle(user_planet)
+            try:
+                # Выполняем программу
+                user_program = convert_to_lines(message.text)
+                user_shuttle.execute(user_program)
+
+                text_for_student = '*Диоход завершил свою миссию!*\n'
+                if len(user_shuttle.memory) == 0:
+                    text_for_student += 'Не было получено ни одной фотографии'
+                else:
+                    text_for_student += 'Были получены следующие фотографии:'
+                # Результат для детей
+                bot.send_message(message.from_user.id, text_for_student, parse_mode="Markdown")
+
+                teacher_photos = []
+                for _photo in user_shuttle.memory:
+                    bot.send_photo(message.from_user.id, _photo.get_image())
+                    teacher_photos.append(_photo.get_description())
+                bot.send_message(message.from_user.id, "Выберите в меню дальнейшее действие", parse_mode="Markdown")
+
+                # Результат для учителей
+                not_done = []
+                for artifact_address in user_shuttle.not_photographed:
+                    artifact = user_planet.area[artifact_address[0]][artifact_address[1]]
+                    not_done.append(artifact.get_description())
+                news_text = '{} получил результат:\n-----\n_{}_'.format(name_for_news, text_for_student)
+                news_text += '\n{}'.format(str(teacher_photos))
+                news_text += '\n-----\n *Не было сфотографировано:* {}'.format(str(not_done))
+                bot.send_message(TEACHER_CHANNEL, news_text, parse_mode="Markdown")
+
+            except CompilationError as err:
+                error_text = """*Ошибка в коде программы:*\n{}""".format(err.message)
+                bot.send_message(message.from_user.id, error_text, parse_mode="Markdown")
+
+                news_text = '{} получил результат:\n```{}```'.format(name_for_news, '\n' + error_text)
+                bot.send_message(TEACHER_CHANNEL, news_text, parse_mode="Markdown")
+            except ActionError as err:
+                error_text = """*Получено экстренное сообщение от диохода:*\n{}""".format(err.message)
+                bot.send_message(message.from_user.id, error_text, parse_mode="Markdown")
+
+                news_text = '{} получил результат:\n```{}```'.format(name_for_news, '\n' + error_text)
+                bot.send_message(TEACHER_CHANNEL, news_text, parse_mode="Markdown")
+            except PlanetError as err:
+                error_text = """{}""".format(err.message)
+                bot.send_message(message.from_user.id, error_text, parse_mode="Markdown")
+
+                news_text = '{} получил результат:\n```{}```'.format(name_for_news, '\n' + error_text)
+                bot.send_message(TEACHER_CHANNEL, news_text, parse_mode="Markdown")
 
 bot.polling()

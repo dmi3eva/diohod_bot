@@ -2,7 +2,8 @@ import re
 from error import *
 
 from settings import *
-from shuttle import *
+from enums import *
+
 
 
 def preprocess_line(command):
@@ -15,7 +16,7 @@ def preprocess_line(command):
 
 
 def preprocess_block(block):
-    block = block.replace('\t', '\n')
+    command = block.replace('\t', '\n')
     while '\n\n' in command:
         command = command.replace('\n\n', '\n')
     return block
@@ -147,13 +148,14 @@ class Rotate:
 def parse_rotate(lines):
     hat = lines[0].replace(' ', '').strip().lower()
     validation = re.findall(ROTATE_HAT_PATTERN, hat)
-    if len(validation) != 1 or validation[0] != hat:
+    if (len(validation) != 1 or validation[0] != hat) and (''.join(validation[0]) != hat):
         raise CompilationError('Проблема в строке ```\"{}\"```'.format(hat))
-    direction_text = int(hat[hat.index('(') + 1:hat.index(')')])
+    direction_text = hat[hat.index('(') + 1:hat.index(')')]
+
     direction = {
         'north': Compass.NORTH,
         'west': Compass.WEST,
         'east': Compass.EAST,
         'south': Compass.SOUTH
     }[direction_text]
-    return Rotate(direction)
+    return Rotate(direction, lines[1:])

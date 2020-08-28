@@ -1,6 +1,7 @@
 from planet import *
 from settings import *
 from artifact.warehouse import *
+from enums import *
 
 
 # Планета №1

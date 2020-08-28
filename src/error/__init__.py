@@ -6,3 +6,8 @@ class CompilationError(Exception):
 class ActionError(Exception):
     def __init__(self, reason):
         self.message = reason
+
+
+class PlanetError(Exception):
+    def __init__(self, reason):
+        self.message = reason
