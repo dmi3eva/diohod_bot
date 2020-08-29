@@ -10,7 +10,7 @@ def preprocess_line(command):
     """Предобработка команды"""
     command = command.lower()
     command = command.strip()
-    while ' ' in command:
+    while '  ' in command:
         command = command.replace('  ', ' ')
     return command
 
