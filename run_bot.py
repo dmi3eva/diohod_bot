@@ -86,7 +86,7 @@ def start(message):
             bot.send_message(TEACHER_CHANNEL, news_text, parse_mode="Markdown")
 
             # Отправляем диоход
-            controller.users[message.from_user.id].state = State.MENU
+            controller.users[message.from_user.id].state = State.RESEARCH
             user_planet = controller.users[message.from_user.id].planet
             user_shuttle = Shuttle(user_planet)
             try:
