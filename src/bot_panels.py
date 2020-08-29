@@ -30,8 +30,6 @@ planet_button_10 = types.InlineKeyboardButton(text='\U0001FA90 Планета 10
 planet_button_11 = types.InlineKeyboardButton(text='\U0001FA90 Планета 11', callback_data='planet_11')
 planet_button_12 = types.InlineKeyboardButton(text='\U0001FA90 Планета 12', callback_data='planet_12')
 
-planet_panel = types.InlineKeyboardMarkup(row_width=3)
-planet_panel.add(planet_button_01, planet_button_02, planet_button_03)
-planet_panel.add(planet_button_04, planet_button_05, planet_button_06)
-planet_panel.add(planet_button_07, planet_button_08, planet_button_09)
-planet_panel.add(planet_button_10, planet_button_11, planet_button_12)
+planet_panel = types.InlineKeyboardMarkup(row_width=2)
+planet_panel.add(planet_button_01, planet_button_02)
+planet_panel.add(planet_button_03, planet_button_04)

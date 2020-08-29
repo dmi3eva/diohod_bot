@@ -9,4 +9,10 @@ empty = Artifact('Пустота', os.path.join(ARTIFACTS_IMG, 'empty.png'), 'em
 camera_roll = Artifact('Пленка кончилась', os.path.join(ARTIFACTS_IMG, 'camera_roll.png'), 'camera_roll')
 idol = Artifact('Истукан прямо, как на острове Пасхи', os.path.join(ARTIFACTS_IMG, 'idol.png'), 'idol')
 
+ufo_01 = Artifact('НЛО-1', os.path.join(ARTIFACTS_IMG, 'ufo_01.png'), 'ufo_01')
+ufo_02 = Artifact('НЛО-2', os.path.join(ARTIFACTS_IMG, 'ufo_02.png'), 'ufo_02')
+ufo_03 = Artifact('НЛО-3', os.path.join(ARTIFACTS_IMG, 'ufo_03.png'), 'ufo_03')
+key = Artifact('Ключ', os.path.join(ARTIFACTS_IMG, 'key.png'), 'key')
+gold = Artifact('Золотишко', os.path.join(ARTIFACTS_IMG, 'gold.png'), 'gold')
+
 
