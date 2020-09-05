@@ -10,6 +10,8 @@ class Mission():
         self.ill_path = image
 
     def get_illustration(self):
+        if self.ill_path is None:
+            return None
         if os.path.exists(self.ill_path):
             return open(self.ill_path, 'rb')
         return None

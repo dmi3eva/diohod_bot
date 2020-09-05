@@ -77,7 +77,10 @@ class Condition:
 
 def parse_condition(lines):
     alias, true_block, remain = _parse_true_block(lines)
-    false_block, remain = _parse_false_block(remain)
+    if 'else' in remain[0]:
+        false_block, remain = _parse_false_block(remain)
+    else:
+        false_block = []
     return Condition(alias, true_block, false_block, remain)
 
 
@@ -87,6 +90,8 @@ def _parse_true_block(lines):
     if len(validation) != 1 or validation[0] != hat:
         raise CompilationError('Проблема в строке ```\"{}\"```'.format(hat))
     alias = hat[hat.index('is ') + 3:]
+    if alias[-1] == '{':
+        alias = alias[:-1]
     if alias[-1] == '\{':
         alias = alias[:-1]
     alias = alias.strip()

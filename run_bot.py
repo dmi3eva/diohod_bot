@@ -45,8 +45,15 @@ def start(message):
         bot.send_message(message.from_user.id, 'На какую планету отправить ракету с диоходом?', reply_markup=planet_panel)
         controller.users[message.from_user.id].state = State.RESEARCH
     elif HELP_BUTTON_TEXT in message.text.lower():
-        bot.send_message(message.from_user.id, 'Помощь')
-        controller.users[message.from_user.id].state = State.HELP
+        controller.users[message.from_user.id].state = State.MENU
+        name = controller.users[message.from_user.id].name
+        name_for_news = '*{}*'.format(name)
+        # controller.restore_bd()
+        if name != ANONYMOUS_USER:
+            name_for_news = 'Пользователь *{}*'.format(name)
+        teacher_text = '{} вызвал справку.'.format(name_for_news)
+        bot.send_message(TEACHER_CHANNEL, teacher_text, parse_mode="Markdown")
+        bot.send_message(message.from_user.id, HELP_TEXT, parse_mode="Markdown")
     elif PUBLISH_BUTTON_TEXT in message.text.lower():
         bot.send_message(
             message.from_user.id,
@@ -71,14 +78,14 @@ def start(message):
             teacher_text = '*{}* ({}):\nНОВОСТЬ\n_\"{}\"_'.format(message.from_user.id, name, message.text)
             bot.send_message(TEACHER_CHANNEL, teacher_text, parse_mode="Markdown")
         # Режим РЕГИСТРАЦИИ
-        if controller.users[message.from_user.id].state == State.SETTINGS:
+        elif controller.users[message.from_user.id].state == State.SETTINGS:
             controller.users[message.from_user.id].state = State.MENU
             text = '*{}* = {}'.format(message.from_user.id, message.text)
             # controller.users[message.from_user.id].name = message.text
             controller.set_user(message.from_user.id, Property.NAME, message.text)
             bot.send_message(TEACHER_CHANNEL, text,  parse_mode="Markdown")
         # Режим ИССЛЕДОВАНИЯ
-        if controller.users[message.from_user.id].state == State.RESEARCH:
+        elif controller.users[message.from_user.id].state == State.RESEARCH:
             # Программа для учителей
             name = controller.users[message.from_user.id].name
             name_for_news = '*{}*'.format(name)
@@ -95,6 +102,8 @@ def start(message):
                 user_shuttle.execute(user_program)
 
                 text_for_student = '*Диоход завершил свою миссию!*\n'
+                unique_amount = len(user_shuttle.explored_cells)
+                text_for_student += 'Cфотографировано различных клеток планеты: {} шт.\n'.format(unique_amount)
                 if len(user_shuttle.memory) == 0:
                     text_for_student += 'Не было получено ни одной фотографии'
                 else:
@@ -136,5 +145,10 @@ def start(message):
 
                 news_text = '{} получил результат:\n```{}```'.format(name_for_news, '\n' + error_text)
                 bot.send_message(TEACHER_CHANNEL, news_text, parse_mode="Markdown")
+            except:
+                bot.send_message(message.from_user.id, "Ошибка в программе", parse_mode="Markdown")
+        else:
+            bot.send_message(message.from_user.id, 'Выбрите действие в меню')
+
 
 bot.polling()

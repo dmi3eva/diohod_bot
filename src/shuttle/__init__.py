@@ -11,8 +11,8 @@ class Shuttle:
         self.x = planet.base_x
         self.y = planet.base_y
         self.memory = []
+        self.explored_cells = set()
         self.not_photographed = planet.get_all_objects_cells()
-        self.unique_cells_amount = 0
         self.history = planet.get_area_scheme()
         self.history[self.x][self.y].append(0)
         self.time = 0
@@ -58,6 +58,8 @@ class Shuttle:
         if len(self.memory) < MEMORY_LIMIT:
             _x, _y = self._get_coordinate()
             photography = self._make_photo(_x, _y)
+            if photography.alias not in ['cosmos']:
+                self.explored_cells.add((_x, _y))
             self.memory.append(photography)
             if (_x, _y) in self.not_photographed:
                 self.not_photographed.remove((_x, _y))
@@ -101,6 +103,8 @@ class Shuttle:
         if len(self.memory) == 0:
             raise CompilationError('Не могу удалить фото - память пуста.')
         self.memory.pop()
+        if len(self.memory) == MEMORY_LIMIT:
+            self.memory.pop()
         self.time += 1
         self.execute(pop.remain)
 
@@ -126,5 +130,5 @@ class Shuttle:
         if self.__planet.shape in [PlanetShape.TORUS, PlanetShape.X_CYLINDER]:
             _x %= self.__planet.width
         if self.__planet.shape in [PlanetShape.TORUS, PlanetShape.Y_CYLINDER]:
-            _y %= self.__planet.width
+            _y %= self.__planet.height
         return _x, _y
