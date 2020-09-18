@@ -47,6 +47,7 @@ def convert_to_lines(user_program):
         raise CompilationError('Каждый диоход может послать фото только 1 раз.')
     lines = user_program.split('\n')
     lines = [preprocess_line(_l) for _l in lines]
+    lines = [_l for _l in lines if len(_l) > 0]
     return lines
 
 
