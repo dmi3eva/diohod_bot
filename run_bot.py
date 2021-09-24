@@ -31,7 +31,7 @@ def callback_worker(call):
     for _data, _planet in CALL_PLANET_CORRESPONDENCE.items():
         if call.data == _data:
             controller.users[call.message.chat.id].planet = _planet
-            controller.users[call.message.chat.id].state == State.RESEARCH
+            controller.users[call.message.chat.id].state = State.RESEARCH
             bot.send_message(call.message.chat.id, _planet.mission.text, parse_mode="Markdown")
             illustration = _planet.mission.get_illustration()
             if illustration is not None:
