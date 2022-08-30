@@ -2,9 +2,9 @@ from typing import *
 from base64 import b64encode
 from IPython.display import Image, display, HTML
 
-from planet.warehouse import *
-from shuttle import Shuttle
-from converter import *
+from diohod_bot.src.planet.warehouse import *
+from diohod_bot.src.shuttle import Shuttle
+from diohod_bot.src.converter import *
 from utils import *
 
 PLANETS = [None, planet_01, planet_02, planet_03, planet_04, planet_05, planet_06, planet_07, planet_08, planet_09]
