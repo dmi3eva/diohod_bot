@@ -52,16 +52,16 @@ planet_04.area[5][1] = gold
 
 # Планета №5
 mission_05 = Mission(
-    """Планета №5 плоская, имеет размер 4 на 4 клеточки и базу в точке (0,0). Самое главное - по ней бродят животные!!!
+    text="""Планета №5 плоская, имеет размер 4 на 4 клеточки и базу в точке (0,0). Самое главное - по ней бродят животные!!!
     \n\U0001F3AF Обойдите всю планету и найдите всех!
     \n\U0001F43E Имейте в виду - животные медленно, но перемещаются. После каждого нового пуска диохода животные будут оказываться в новых местах.""",
-    os.path.join(MISSIONS_IMG, 'planet_05.png')
+    image=os.path.join(MISSIONS_IMG, 'planet_05.png')
 )
 planet_05 = Planet(width=4, height=4, base_x=0, base_y=0, shape=PlanetShape.SQUARE, mission=mission_05)
-planet_05.area[1][randint(1, 3)] = mammoth
-planet_05.area[2][randint(1, 3)] = orangutan
-planet_05.area[3][randint(1, 2)] = goose
-planet_05.area[choice([0, 3])][choice([0, 3])] = unicorn
+planet_05.area[randint(1, 3)][0] = mammoth
+planet_05.area[1][0] = orangutan
+planet_05.area[randint(1, 2)][2] = goose
+planet_05.area[3][3] = unicorn
 
 
 # Планета №6
@@ -70,8 +70,8 @@ mission_06 = Mission(
     \n\U0001F3AF Попробуйте понять, как называлась разбившаяся ракета.
     \n\U0001F3E0 Координаты базы: (0, 0). Планета плоская и имеет форму квадрата 1 на 1000.
     \n\U0001F32A Имейте в виду - на планете дует сильный ветер и осколки перемещаются. 
-    \n\U0001F4F7 Память фотоаппарата позволяет сохранить только 30 кадров.""",
-    os.path.join(MISSIONS_IMG, 'planet_06.png')
+    \n\U0001F4F7 Память фотоаппарата позволяет сохранить только 30 кадров."""
+    # os.path.join(MISSIONS_IMG, 'planet_06.png')
 )
 planet_06 = Planet(width=1, height=1000, base_x=0, base_y=0, shape=PlanetShape.SQUARE, mission=mission_06)
 planet_06.area[0][randint(1, 150)] = shard

@@ -1,13 +1,12 @@
 import telebot
 
-from configuration import *
-from bot_panels import *
-from controller import *
+from src.configuration import *
+from src.bot_panels import *
+from src.controller import *
 
-from planet.warehouse import *
-from converter import *
-from error import *
-from shuttle import Shuttle
+from src.planet.warehouse import *
+from src.converter import *
+from src.shuttle import Shuttle
 
 
 bot = telebot.TeleBot(API_TOKEN)
@@ -145,10 +144,10 @@ def start(message):
 
                 news_text = '{} получил результат:\n```{}```'.format(name_for_news, '\n' + error_text)
                 bot.send_message(TEACHER_CHANNEL, news_text, parse_mode="Markdown")
-            except:
+            except Exception as err:
                 bot.send_message(message.from_user.id, "Ошибка в программе", parse_mode="Markdown")
         else:
-            bot.send_message(message.from_user.id, 'Выбрите действие в меню')
+            bot.send_message(message.from_user.id, 'Выберите действие в меню')
 
 
 bot.polling()

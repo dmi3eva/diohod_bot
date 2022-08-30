@@ -1,10 +1,8 @@
 import PySimpleGUI as sg
 from ui.main_window import get_main_menu
 from ui.result_popup import get_popup_window
-from settings import HELP_TEXT
 from planet.warehouse import *
 from converter import *
-from error import *
 from shuttle import Shuttle
 from utils import *
 

@@ -29,4 +29,3 @@ letter_t = Artifact('Т', os.path.join(ARTIFACTS_IMG, 'letter_t.png'), 'letter_t
 
 lenin = Artifact('Памятник Ленину', os.path.join(ARTIFACTS_IMG, 'lenin.png'), 'lenin')
 pyramid = Artifact('Пирамида', os.path.join(ARTIFACTS_IMG, 'pyramid.png'), 'pyramid')
-pyramid = Artifact('Пирамида', os.path.join(ARTIFACTS_IMG, 'pyramid.png'), 'pyramid')

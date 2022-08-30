@@ -9,5 +9,6 @@ class ActionError(Exception):
 
 
 class PlanetError(Exception):
-    def __init__(self, reason):
-        self.message = reason
+    def __init__(self, message):
+        super(PlanetError, self).__init__()
+        self.message = message
