@@ -11,13 +11,13 @@ from diohod_bot.src.utils import *
 PLANETS = [None, planet_01, planet_02, planet_03, planet_04, planet_05, planet_06, planet_07, planet_08, planet_09]
 
 
-def render_photo(path):
+def render_photo(path) -> NoReturn:
     try:
         img = open(path, 'rb').read()
     except:
         img = open('diohod_bot/img/other/error_with_text.png', 'rb').read()
     data_url = 'data:image/jpeg;base64,' + b64encode(img).decode()
-    return data_url
+    display(HTML(f"<img src='{data_url}' width='130'>"))
 
 
 def go(mission_number: int, program: str) -> NoReturn:
@@ -40,8 +40,7 @@ def go(mission_number: int, program: str) -> NoReturn:
             display(HTML(f"№{ind + 1}"))
             root_path = str(_photo.img_path).split('\\')[-1]
             colab_path = "diohod_bot/img/artifacts/" + root_path
-            photo = render_photo(colab_path)
-            display(photo)
+            render_photo(colab_path)
     except CompilationError as err:
         error_text = """<b>Ошибка в коде программы:</b>\n{}""".format(err.message)
         display(HTML(error_text))
