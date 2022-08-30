@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 from ui.main_window import get_main_menu
 from ui.result_popup import get_popup_window
+from src.settings import HELP_TEXT
 from planet.warehouse import *
 from converter import *
 from shuttle import Shuttle
@@ -51,7 +52,7 @@ while True:
             if len(user_shuttle.memory) == 0:
                 text_for_student += 'Не было получено ни одной фотографии'
             else:
-                text_for_student += 'Были получены следующие фотографии:'
+                text_for_student += 'Были получены следующие фотографии (порядок - слева направо, потом сверху-вниз):'
             img_for_student = [_ph.img_path for _ph in user_shuttle.memory]
         except CompilationError as err:
             text_for_student = """Ошибка в коде программы:\n{}""".format(err.message)

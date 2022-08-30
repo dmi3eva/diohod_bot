@@ -2,8 +2,6 @@ from enums import *
 from artifact.warehouse import *
 
 
-
-
 class Mission():
     def __init__(self, text=None, image=None):
         self.text = text
@@ -19,6 +17,7 @@ class Mission():
 
 class Planet:
     def __init__(self, width=6, height=7, base_x=0, base_y=0, shape=PlanetShape.SQUARE, mission=Mission()):
+        # base_x - то номер столбцы
         self.mission = mission
         self.area = [[None for _ in range(height)] for _ in range(width)]
         self.width = width

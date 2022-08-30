@@ -58,10 +58,10 @@ mission_05 = Mission(
     image=os.path.join(MISSIONS_IMG, 'planet_05.png')
 )
 planet_05 = Planet(width=4, height=4, base_x=0, base_y=0, shape=PlanetShape.SQUARE, mission=mission_05)
-planet_05.area[randint(1, 3)][0] = mammoth
+planet_05.area[0][randint(1, 3)] = mammoth
 planet_05.area[1][0] = orangutan
-planet_05.area[randint(1, 2)][2] = goose
-planet_05.area[3][3] = unicorn
+planet_05.area[2][randint(1, 2)] = goose
+planet_05.area[3][0] = unicorn
 
 
 # Планета №6
@@ -97,7 +97,7 @@ planet_07.area[1][84] = lenin
 mission_08 = Mission(
     """В зоне по периметру планеты №8 располагается некий огромный объект.
     \n\U0001F3AF Определите, что это?
-    \n\U0001F409 По зеленой зоне бегает динозавр. Встреться с ним не хотелось бы (мягко говоря).
+    \n\U0001F409 По серой зоне бегает динозавр. Встреться с ним не хотелось бы (мягко говоря).
     \n\U0001F3E0 Размер планеты: 5 на 5. База находится в точке (2, 2).""",
     os.path.join(MISSIONS_IMG, 'planet_08.png')
 )
