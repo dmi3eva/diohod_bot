@@ -40,7 +40,7 @@ def go(mission_number: int, program: str) -> NoReturn:
         for ind, _photo in enumerate(user_shuttle.memory):
             display(HTML(f"№{ind + 1}"))
             root_path = str(_photo.img_path).split('\\')[-1].split('/')[-1]
-            print(f"Root path: {}")
+            print(f"Root path: {root_path}")
             colab_path = "diohod_bot/img/artifacts/" + root_path
             render_photo(colab_path)
     except CompilationError as err:
