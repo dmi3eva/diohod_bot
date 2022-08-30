@@ -15,7 +15,10 @@ def render_photo(path) -> NoReturn:
     try:
         if path:
             root_path = str(path).split('\\')[-1].split('/')[-1]
-            colab_path = "diohod_bot/img/artifacts/" + root_path
+            if 'artifacts' in path:
+                colab_path = "diohod_bot/img/artifacts/" + root_path
+            else:
+                colab_path = "diohod_bot/img/missions/" + root_path
             img = open(colab_path, 'rb').read()
     except:
         img = open('diohod_bot/img/other/error_with_text.png', 'rb').read()
@@ -60,7 +63,7 @@ def task(mission_number: int) -> NoReturn:
         user_planet = PLANETS[mission_number]
         mission = user_planet.mission
         print(mission.text)
-        display(f"{Markdown(mission.text)}")
+        # display(f"{Markdown(mission.text)}")
         render_photo(mission.ill_path)
     except:
         print("На эту планету вам пока нельзя!")
