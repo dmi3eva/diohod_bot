@@ -1,6 +1,6 @@
 from typing import *
 from base64 import b64encode
-from IPython.display import Image, display, HTML
+from IPython.display import Image, display, HTML, Markdown
 
 from diohod_bot.src.planet.warehouse import *
 from diohod_bot.src.shuttle import Shuttle
@@ -13,7 +13,10 @@ PLANETS = [None, planet_01, planet_02, planet_03, planet_04, planet_05, planet_0
 
 def render_photo(path) -> NoReturn:
     try:
-        img = open(path, 'rb').read()
+        if path:
+            root_path = str(path).split('\\')[-1].split('/')[-1]
+            colab_path = "diohod_bot/img/artifacts/" + root_path
+            img = open(colab_path, 'rb').read()
     except:
         img = open('diohod_bot/img/other/error_with_text.png', 'rb').read()
     data = 'data:image/jpeg;base64,' + b64encode(img).decode()
@@ -38,9 +41,7 @@ def go(mission_number: int, program: str) -> NoReturn:
 
         for ind, _photo in enumerate(user_shuttle.memory):
             display(HTML(f"<b>№{ind + 1}</b>"))
-            root_path = str(_photo.img_path).split('\\')[-1].split('/')[-1]
-            colab_path = "diohod_bot/img/artifacts/" + root_path
-            render_photo(colab_path)
+            render_photo(_photo.img_path)
     except CompilationError as err:
         error_text = """<b>Ошибка в коде программы:</b><br>{}""".format(err.message)
         display(HTML(error_text))
@@ -52,6 +53,18 @@ def go(mission_number: int, program: str) -> NoReturn:
         display(HTML(error_text))
     except Exception as err:
         render_photo(None)
+
+def task(mission_number: int) -> NoReturn:
+    try:
+        user_planet = PLANETS[mission_number]
+        mission = user_planet.mission
+        display(f"{Markdown(mission)}")
+        render_photo(mission.ill_path)
+    except:
+        print("На эту планету вам пока нельзя!")
+
+
+
 
 # img = open('diohod_bot/img/artifacts/dino.png', 'rb').read()
 # go(1, "move()\nrotate()\nphoto()")
