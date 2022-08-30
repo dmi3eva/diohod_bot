@@ -12,6 +12,7 @@ PLANETS = [None, planet_01, planet_02, planet_03, planet_04, planet_05, planet_0
 
 
 def render_photo(path) -> NoReturn:
+    size = 140
     try:
         if path:
             root_path = str(path).split('\\')[-1].split('/')[-1]
@@ -19,11 +20,12 @@ def render_photo(path) -> NoReturn:
                 colab_path = "diohod_bot/img/artifacts/" + root_path
             else:
                 colab_path = "diohod_bot/img/missions/" + root_path
+                size = "250"
             img = open(colab_path, 'rb').read()
     except:
         img = open('diohod_bot/img/other/error_with_text.png', 'rb').read()
     data = 'data:image/jpeg;base64,' + b64encode(img).decode()
-    display(HTML(f"<img src='{data}' width='140'>"))
+    display(HTML(f"<img src='{data}' width='{size}'>"))
 
 
 def go(mission_number: int, program: str) -> NoReturn:
