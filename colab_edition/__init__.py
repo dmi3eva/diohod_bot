@@ -62,7 +62,7 @@ def task(mission_number: int) -> NoReturn:
     try:
         user_planet = PLANETS[mission_number]
         mission = user_planet.mission
-        print(mission.text)
+        print(mission.text.replace("Программу пишите прямо в сообщении.", "").replace("\n\n"), "\n")
         # display(f"{Markdown(mission.text)}")
         render_photo(mission.ill_path)
     except:
