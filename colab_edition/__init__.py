@@ -28,9 +28,9 @@ def go(mission_number: int, program: str) -> NoReturn:
         user_program = convert_to_lines(program)
         user_shuttle.execute(user_program)
 
-        text_for_student = '<b>Диоход завершил свою миссию!</b>\n'
+        text_for_student = '<b>Диоход завершил свою миссию!</b><br>'
         unique_amount = len(user_shuttle.explored_cells)
-        text_for_student += 'Cфотографировано различных клеток планеты: {} шт.\n'.format(unique_amount)
+        text_for_student += 'Cфотографировано различных клеток планеты: {} шт.<br>'.format(unique_amount)
         if len(user_shuttle.memory) == 0:
             text_for_student += 'Не было получено ни одной фотографии'
         else:
@@ -39,14 +39,15 @@ def go(mission_number: int, program: str) -> NoReturn:
 
         for ind, _photo in enumerate(user_shuttle.memory):
             display(HTML(f"№{ind + 1}"))
-            root_path = str(_photo.img_path).split('\\')[-1]
+            root_path = str(_photo.img_path).split('\\')[-1].split('/')[-1]
+            print(f"Root path: {}")
             colab_path = "diohod_bot/img/artifacts/" + root_path
             render_photo(colab_path)
     except CompilationError as err:
-        error_text = """<b>Ошибка в коде программы:</b>\n{}""".format(err.message)
+        error_text = """<b>Ошибка в коде программы:</b><br>{}""".format(err.message)
         display(HTML(error_text))
     except ActionError as err:
-        error_text = """<b>Получено экстренное сообщение от диохода:</b>\n{}""".format(err.message)
+        error_text = """<b>Получено экстренное сообщение от диохода:</b><br>{}""".format(err.message)
         display(HTML(error_text))
     except PlanetError as err:
         error_text = """{}""".format(err.message)
