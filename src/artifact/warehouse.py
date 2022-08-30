@@ -1,5 +1,9 @@
-from artifact import *
-from settings import *
+try:
+    from src.artifact import *
+    from src.settings import *
+except:
+    from diohod_bot.src.artifact import *
+    from diohod_bot.src.settings import *
 
 base = Artifact('База', os.path.join(ARTIFACTS_IMG, 'base.png'), 'base')
 dino = Artifact('Динозавр', os.path.join(ARTIFACTS_IMG, 'dino.png'), 'dino')
