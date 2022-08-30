@@ -13,7 +13,6 @@ PLANETS = [None, planet_01, planet_02, planet_03, planet_04, planet_05, planet_0
 
 def render_photo(path) -> NoReturn:
     try:
-        print(path)
         img = open(path, 'rb').read()
     except:
         img = open('diohod_bot/img/other/error_with_text.png', 'rb').read()
@@ -38,9 +37,8 @@ def go(mission_number: int, program: str) -> NoReturn:
         display(HTML(text_for_student))
 
         for ind, _photo in enumerate(user_shuttle.memory):
-            display(HTML(f"№{ind + 1}"))
+            display(HTML(f"<b>№{ind + 1}</b>"))
             root_path = str(_photo.img_path).split('\\')[-1].split('/')[-1]
-            print(f"Root path: {root_path}")
             colab_path = "diohod_bot/img/artifacts/" + root_path
             render_photo(colab_path)
     except CompilationError as err:
