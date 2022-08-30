@@ -1,5 +1,5 @@
 from enum import Enum
-from enums import *
+
 
 class Compass(Enum):
     NORTH = 0

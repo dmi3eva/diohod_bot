@@ -1,9 +1,14 @@
 from random import choice, randint
-
-from planet import *
-from settings import *
-from artifact.warehouse import *
-from enums import *
+try:
+    from src.planet import *
+    from src.settings import *
+    from src.artifact.warehouse import *
+    from src.enums import *
+except:
+    from diohod_bot.src.planet import *
+    from diohod_bot.src.settings import *
+    from diohod_bot.src.artifact.warehouse import *
+    from diohod_bot.src.enums import *
 
 
 # Планета №1
