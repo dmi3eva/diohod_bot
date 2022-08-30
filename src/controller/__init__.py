@@ -2,8 +2,8 @@ import os
 import dill
 from enum import Enum
 
-from settings import *
-from collections import defaultdict
+from src.settings import *
+from src.collections import defaultdict
 
 
 class State(Enum):

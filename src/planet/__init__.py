@@ -1,5 +1,9 @@
-from enums import *
-from artifact.warehouse import *
+try:
+    from src.enums import *
+    from src.artifact.warehouse import *
+except:
+    from diohod_bot.src.enums import *
+    from diohod_bot.src.artifact.warehouse import *
 
 
 class Mission():

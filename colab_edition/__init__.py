@@ -5,6 +5,7 @@ from IPython.display import Image, display, HTML
 from diohod_bot.src.planet.warehouse import *
 from diohod_bot.src.shuttle import Shuttle
 from diohod_bot.src.converter import *
+from diohod_bot.src.error import *
 from utils import *
 
 PLANETS = [None, planet_01, planet_02, planet_03, planet_04, planet_05, planet_06, planet_07, planet_08, planet_09]
@@ -41,7 +42,16 @@ def go(mission_number: int, program: str) -> NoReturn:
             colab_path = "diohod_bot/img/artifacts/" + root_path
             photo = render_photo(colab_path)
             display(photo)
-    except:
+    except CompilationError as err:
+        error_text = """<b>Ошибка в коде программы:</b>\n{}""".format(err.message)
+        display(HTML(error_text))
+    except ActionError as err:
+        error_text = """<b>Получено экстренное сообщение от диохода:</b>\n{}""".format(err.message)
+        display(HTML(error_text))
+    except PlanetError as err:
+        error_text = """{}""".format(err.message)
+        display(HTML(error_text))
+    except Exception as err:
         render_photo(None)
 
 # img = open('diohod_bot/img/artifacts/dino.png', 'rb').read()

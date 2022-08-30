@@ -1,9 +1,12 @@
 import re
-from error import *
-
-from settings import *
-from enums import *
-
+try:
+    from src.error import *
+    from src.settings import *
+    from src.enums import *
+except:
+    from diohod_bot.src.error import *
+    from diohod_bot.src.settings import *
+    from diohod_bot.src.enums import *
 
 
 def preprocess_line(command):
