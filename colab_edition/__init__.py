@@ -13,11 +13,12 @@ PLANETS = [None, planet_01, planet_02, planet_03, planet_04, planet_05, planet_0
 
 def render_photo(path) -> NoReturn:
     try:
+        print(path)
         img = open(path, 'rb').read()
     except:
         img = open('diohod_bot/img/other/error_with_text.png', 'rb').read()
-    data_url = 'data:image/jpeg;base64,' + b64encode(img).decode()
-    display(HTML(f"<img src='{data_url}' width='130'>"))
+    data = 'data:image/jpeg;base64,' + b64encode(img).decode()
+    display(HTML(f"<img src='{data}' width='140'>"))
 
 
 def go(mission_number: int, program: str) -> NoReturn:
