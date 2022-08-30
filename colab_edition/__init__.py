@@ -54,11 +54,13 @@ def go(mission_number: int, program: str) -> NoReturn:
     except Exception as err:
         render_photo(None)
 
+
 def task(mission_number: int) -> NoReturn:
     try:
         user_planet = PLANETS[mission_number]
         mission = user_planet.mission
-        display(f"{Markdown(mission)}")
+        print(mission.text)
+        display(f"{Markdown(mission.text)}")
         render_photo(mission.ill_path)
     except:
         print("На эту планету вам пока нельзя!")
