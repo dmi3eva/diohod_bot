@@ -6,7 +6,7 @@ from diohod_bot.src.planet.warehouse import *
 from diohod_bot.src.shuttle import Shuttle
 from diohod_bot.src.converter import *
 from diohod_bot.src.error import *
-from utils import *
+from diohod_bot.src.utils import *
 
 PLANETS = [None, planet_01, planet_02, planet_03, planet_04, planet_05, planet_06, planet_07, planet_08, planet_09]
 
