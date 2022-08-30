@@ -45,4 +45,4 @@ def go(mission_number: int, program: str) -> NoReturn:
         render_photo(None)
 
 # img = open('diohod_bot/img/artifacts/dino.png', 'rb').read()
-go(1, "move()\nrotate()\nphoto()")
+# go(1, "move()\nrotate()\nphoto()")
