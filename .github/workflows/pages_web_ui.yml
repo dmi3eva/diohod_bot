@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - web_UI
+  workflow_dispatch:
 
 permissions:
   contents: read
