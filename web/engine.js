@@ -130,7 +130,7 @@ const DiohodEngine = (() => {
         }
         if (stack.length === 1) {
           const open = stack.pop();
-          const rawBlock = text.slice(open + 1, i);
+          const rawBlock = text.slice(open + 1, Math.max(open + 1, i - 1));
           const rawRemain = text.slice(i + 1);
           const blockLines = rawBlock
             .split("#")
