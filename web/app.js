@@ -229,6 +229,39 @@ function getCheatSheetHtml() {
 }
 
 function getHelpModalHtml() {
+  const trainer = `
+    <div style="margin-bottom: 12px; color: rgba(255,255,255,0.86);">
+      <div style="margin-bottom: 8px; font-weight: 800;">Тренажёр</div>
+
+      <div style="margin-bottom: 10px;">
+        <div style="margin-bottom: 8px; font-weight: 700;">Планеты</div>
+        <ul style="margin: 0; padding-left: 18px; color: rgba(255,255,255,0.78); line-height: 1.45; display: grid; gap: 6px;">
+          <li>Каждая планета условно разделена на равные клеточки</li>
+          <li>База на каждой планете находится всегда в одном месте</li>
+          <li>На эту базу прилетают все диоходы</li>
+          <li>В каждой клетке может быть только один объект, помимо диохода</li>
+          <li>Ваша задача изучить планету и ответить на вопрос</li>
+          <li>Ответ на вопрос необходимо оформить согласно указаниям вашего преподавателя</li>
+        </ul>
+      </div>
+
+      <div>
+        <div style="margin-bottom: 8px; font-weight: 700;">Диоход</div>
+        <ul style="margin: 0; padding-left: 18px; color: rgba(255,255,255,0.78); line-height: 1.45; display: grid; gap: 6px;">
+          <li>Умеет передвигаться по клеточкам, соединенным сторонами. Один шаг – одна клеточка.</li>
+          <li>Двигается вперед в направлении, куда смотрит его голова.</li>
+          <li>Понимает только правильные команды</li>
+          <li>Изначально смотрит на север</li>
+          <li>Фотографирует по направлению движения: делает фотографию клетки строго перед собой</li>
+          <li>При использовании команды <span class="cmd">rotate()</span> направление головы будет меняться соответствующим образом</li>
+          <li>В конце диоход высылает все фотографии</li>
+          <li>Память диохода ограничена 30 снимками, остальное сохраняться не будет</li>
+          <li>У вас не более 3000 единиц времени пребывания на планете. Дальше батарея заканчивается</li>
+        </ul>
+      </div>
+    </div>
+  `;
+
   const intro = `
     <div style="margin-bottom: 12px; color: rgba(255,255,255,0.86);">
       <div style="margin-bottom: 8px; font-weight: 700;">Как выполнять миссию</div>
@@ -262,7 +295,7 @@ function getHelpModalHtml() {
     </div>
   `;
 
-  return `${intro}${commands}`;
+  return `${trainer}${intro}${commands}`;
 }
 
 function setActiveMission(missionId) {
