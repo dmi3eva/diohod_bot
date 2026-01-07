@@ -395,6 +395,9 @@ html, body {
   backdrop-filter: blur(14px);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal__header {
@@ -420,6 +423,7 @@ html, body {
 .modal__body {
   padding: 14px;
   color: rgba(255, 255, 255, 0.86);
+  overflow: auto;
 }
 
 .modal__footer {
