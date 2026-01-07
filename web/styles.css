@@ -148,6 +148,32 @@ html, body {
   overflow: auto;
 }
 
+.mission-desc {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 10px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.mission-desc__item {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.14);
+}
+
+.mission-desc__alert {
+  border-color: rgba(255, 90, 122, 0.28);
+  background: rgba(255, 90, 122, 0.10);
+}
+
+.mission-desc__note {
+  border-color: rgba(110, 231, 255, 0.22);
+  background: rgba(110, 231, 255, 0.08);
+}
+
 .panel__media {
   padding: 0 14px 14px;
 }

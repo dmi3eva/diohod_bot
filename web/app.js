@@ -116,6 +116,38 @@ function escapeHtml(s) {
     .replaceAll("'", "&#039;");
 }
 
+function formatMissionText(text) {
+  const raw = String(text || "").trim();
+  if (!raw) return "";
+
+  const paragraphs = raw
+    .split(/\n\s*\n/g)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  const items = paragraphs
+    .map((p) => {
+      const escaped = escapeHtml(p);
+      const lower = p.toLowerCase();
+
+      let cls = "";
+      if (
+        lower.startsWith("внимание") ||
+        lower.startsWith("осторожно") ||
+        lower.startsWith("опасно")
+      ) {
+        cls = "mission-desc__alert";
+      } else if (lower.startsWith("не забудьте") || lower.startsWith("имейте в виду")) {
+        cls = "mission-desc__note";
+      }
+
+      return `<li class="mission-desc__item ${cls}">${escaped}</li>`;
+    })
+    .join("");
+
+  return `<ul class="mission-desc">${items}</ul>`;
+}
+
 function getCheatSheetHtml() {
   return `
     <div style="display: flex; flex-wrap: wrap; gap: 8px;">
@@ -174,7 +206,7 @@ function setActiveMission(missionId) {
     node.classList.toggle("mission--active", node.dataset.id === missionId);
   }
 
-  els.missionText.innerHTML = escapeHtml(mission.text).replaceAll("\n", "<br />");
+  els.missionText.innerHTML = formatMissionText(mission.text);
 
   if (mission.img) {
     els.missionImg.src = mission.img;
