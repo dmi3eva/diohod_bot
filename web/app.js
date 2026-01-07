@@ -64,32 +64,15 @@ const MISSIONS = [
   }
 ];
 
-const HELP_TEXT = `
-- Планета разбита на клетки. В каждой клетке не более одного объекта
-- Начальное положение диохода: база, направление — север
-- В конце каждой миссии диоход отправляет нам все сделанные фотографии
-- move() — сдвинуться на одну клетку в направлении головы
-- rotate() — повернуться на 90 градусов по часовой стрелке
-- rotate(WEST) — повернуться на запад
-- photo() — сделать фотографию
-- pop() — удалить последнюю фотографию
-
-Повторить 4 раза:
-repeat(4)
-{
-  <ДЕЙСТВИЯ ДЛЯ ПОВТОРЕНИЯ>
-}
-
-Если на последней фотографии ВУЛКАН:
-if last is VOLCANO
-{
-  <Что делать, если условие выполнено?>
-}
-else
-{
-  <Что делать, если условие не выполнено?>
-}
-`;
+const HELP_COMMANDS = [
+  "move()",
+  "rotate()",
+  "rotate(WEST)",
+  "photo()",
+  "pop()",
+  "repeat(n) { ... }",
+  "if last is ALIAS { ... } else { ... }"
+];
 
 const els = {
   missionsList: document.getElementById("missionsList"),
@@ -116,6 +99,14 @@ function escapeHtml(s) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function getHelpHtml() {
+  return `
+    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+      ${HELP_COMMANDS.map((c) => `<span class="cmd">${escapeHtml(c)}</span>`).join("")}
+    </div>
+  `;
 }
 
 function setActiveMission(missionId) {
@@ -216,29 +207,31 @@ function handleStart() {
       photos.length > 0
         ? `<div style="margin-top: 12px;">
             <div style="margin-bottom: 10px; color: rgba(255,255,255,0.75);">Фотографии:</div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;">
-              ${photos
-                .map((p, idx) => {
-                  const src = p.img ? escapeHtml(p.img) : "";
-                  const caption = escapeHtml(p.description || p.alias || "");
-                  const seconds = idx + 1;
-                  const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
-                  const ss = String(seconds % 60).padStart(2, "0");
-                  const timeLabel = `${mm}:${ss}`;
-                  return `
-                    <div style="border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.18);">
-                      ${src ? `<div style="position: relative; background: #ffffff;">
-                        <div style="position: absolute; top: 8px; left: 8px; padding: 2px 8px; border-radius: 999px; font-size: 12px; background: rgba(0,0,0,0.7); color: #ffffff;">${timeLabel}</div>
-                        <img src="${src}" alt="${caption}" style="width: 100%; height: 110px; object-fit: contain; display: block; background: #ffffff;" />
-                      </div>` : ""}
-                      <div style="padding: 8px; font-size: 12px; background: #ffffff; color: #111111;">
-                        <div style="margin-bottom: 4px; color: #333333;">${timeLabel}</div>
-                        <div style="color: #111111;">${caption}</div>
+            <div style="background: #ffffff; border-radius: 14px; padding: 10px;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;">
+                ${photos
+                  .map((p, idx) => {
+                    const src = p.img ? escapeHtml(p.img) : "";
+                    const caption = escapeHtml(p.description || p.alias || "");
+                    const seconds = idx + 1;
+                    const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
+                    const ss = String(seconds % 60).padStart(2, "0");
+                    const timeLabel = `${mm}:${ss}`;
+                    return `
+                      <div style="border: 1px solid rgba(0,0,0,0.12); border-radius: 12px; overflow: hidden; background: #ffffff;">
+                        ${src ? `<div style="position: relative; background: #ffffff;">
+                          <div style="position: absolute; top: 8px; left: 8px; padding: 2px 8px; border-radius: 999px; font-size: 12px; background: rgba(0,0,0,0.7); color: #ffffff;">${timeLabel}</div>
+                          <img src="${src}" alt="${caption}" style="width: 100%; height: 110px; object-fit: contain; display: block; background: #ffffff;" />
+                        </div>` : ""}
+                        <div style="padding: 8px; font-size: 12px; background: #ffffff; color: #111111;">
+                          <div style="margin-bottom: 4px; color: #333333;">${timeLabel}</div>
+                          <div style="color: #111111;">${caption}</div>
+                        </div>
                       </div>
-                    </div>
-                  `;
-                })
-                .join("")}
+                    `;
+                  })
+                  .join("")}
+              </div>
             </div>
           </div>`
         : "";
@@ -293,7 +286,7 @@ function init() {
   initModal();
 
   if (els.cheatSheet) {
-    els.cheatSheet.textContent = HELP_TEXT.trim();
+    els.cheatSheet.innerHTML = getHelpHtml();
   }
 
   setActiveMission(activeMissionId);
@@ -301,7 +294,7 @@ function init() {
   els.helpBtn.addEventListener("click", () => {
     openModal(
       "Справка",
-      `<pre style="white-space: pre-wrap; margin: 0; padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; background: rgba(0,0,0,0.18);">${escapeHtml(HELP_TEXT.trim())}</pre>`
+      `<div style="margin: 0; padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; background: rgba(0,0,0,0.18);">${getHelpHtml()}</div>`
     );
   });
 

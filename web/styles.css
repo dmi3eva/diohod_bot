@@ -159,7 +159,8 @@ html, body {
   border-radius: var(--radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.12);
   display: none;
-  background: rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  padding: 8px;
 }
 
 .mission-img__placeholder {
@@ -196,8 +197,6 @@ html, body {
   border-radius: var(--radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(0, 0, 0, 0.18);
-  max-height: 210px;
-  overflow: auto;
 }
 
 .cheatsheet__title {
@@ -209,11 +208,24 @@ html, body {
 
 .cheatsheet__body {
   margin: 0;
-  white-space: pre-wrap;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   font-family: var(--mono);
   font-size: 12px;
   line-height: 1.35;
   color: rgba(255, 255, 255, 0.82);
+}
+
+.cmd {
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(110, 231, 255, 0.26);
+  background: rgba(110, 231, 255, 0.14);
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
 }
 
 .editor__actions {
