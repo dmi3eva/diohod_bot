@@ -175,8 +175,8 @@ function formatMissionText(text) {
     "постарайтесь"
   ];
 
-  const descriptionItems = [];
-  const taskItems = [];
+  const descriptionChunks = [];
+  const taskChunks = [];
 
   for (const p of paragraphs) {
     const lower = p.toLowerCase();
@@ -194,22 +194,23 @@ function formatMissionText(text) {
     }
 
     const isTask = taskStarters.some((s) => lower.startsWith(s));
-    const itemHtml = `<div class="mission-desc__item ${cls}">${escaped}</div>`;
-    (isTask ? taskItems : descriptionItems).push(itemHtml);
+    const chunkClass = cls ? `mission-desc__chunk ${cls}` : "mission-desc__chunk";
+    const chunkHtml = `<span class="${chunkClass}">${escaped}</span>`;
+    (isTask ? taskChunks : descriptionChunks).push(chunkHtml);
   }
 
   const descBlock =
-    descriptionItems.length > 0
-      ? `<div class="mission-block"><div class="mission-block__title">Описание</div><div class="mission-block__body">${descriptionItems.join(
-          ""
-        )}</div></div>`
+    descriptionChunks.length > 0
+      ? `<div class="mission-block"><div class="mission-block__title">ℹ️ Описание</div><div class="mission-block__body"><div class="mission-block__text">${descriptionChunks.join(
+          " "
+        )}</div></div></div>`
       : "";
 
   const taskBlock =
-    taskItems.length > 0
-      ? `<div class="mission-block mission-block--task"><div class="mission-block__title">Задание</div><div class="mission-block__body">${taskItems.join(
-          ""
-        )}</div></div>`
+    taskChunks.length > 0
+      ? `<div class="mission-block mission-block--task"><div class="mission-block__title">📝 Задание</div><div class="mission-block__body"><div class="mission-block__text">${taskChunks.join(
+          " "
+        )}</div></div></div>`
       : "";
 
   return `<div class="mission-desc">${descBlock}${taskBlock}</div>`;
@@ -231,10 +232,10 @@ function getCheatSheetHtml() {
 function getHelpModalHtml() {
   const trainer = `
     <div style="margin-bottom: 12px; color: rgba(255,255,255,0.86);">
-      <div style="margin-bottom: 8px; font-weight: 800;">Тренажёр</div>
+      <div style="margin-bottom: 8px; font-weight: 800;">🛰️ Тренажёр</div>
 
       <div style="margin-bottom: 10px;">
-        <div style="margin-bottom: 8px; font-weight: 700;">Планеты</div>
+        <div style="margin-bottom: 8px; font-weight: 700;">🪐 Планеты</div>
         <ul style="margin: 0; padding-left: 18px; color: rgba(255,255,255,0.78); line-height: 1.45; display: grid; gap: 6px;">
           <li>Каждая планета условно разделена на равные клеточки</li>
           <li>База на каждой планете находится всегда в одном месте</li>
@@ -246,7 +247,7 @@ function getHelpModalHtml() {
       </div>
 
       <div>
-        <div style="margin-bottom: 8px; font-weight: 700;">Диоход</div>
+        <div style="margin-bottom: 8px; font-weight: 700;">🤖 Диоход</div>
         <ul style="margin: 0; padding-left: 18px; color: rgba(255,255,255,0.78); line-height: 1.45; display: grid; gap: 6px;">
           <li>Умеет передвигаться по клеточкам, соединенным сторонами. Один шаг – одна клеточка.</li>
           <li>Двигается вперед в направлении, куда смотрит его голова.</li>
@@ -264,7 +265,7 @@ function getHelpModalHtml() {
 
   const intro = `
     <div style="margin-bottom: 12px; color: rgba(255,255,255,0.86);">
-      <div style="margin-bottom: 8px; font-weight: 700;">Как выполнять миссию</div>
+      <div style="margin-bottom: 8px; font-weight: 700;">✅ Как выполнять миссию</div>
       <ul style="margin: 0; padding-left: 18px; color: rgba(255,255,255,0.78); line-height: 1.45; display: grid; gap: 6px;">
         <li>Выберите миссию слева.</li>
         <li>Напишите программу в поле справа (команды выполняются сверху вниз).</li>
@@ -276,7 +277,7 @@ function getHelpModalHtml() {
 
   const commands = `
     <div style="margin-top: 6px;">
-      <div style="margin-bottom: 8px; font-weight: 700;">Команды</div>
+      <div style="margin-bottom: 8px; font-weight: 700;">⌨️ Команды</div>
       <div style="display: grid; gap: 10px;">
         ${HELP_COMMANDS.map(({ cmdHtml, cmd, desc, details }) => {
           const left = cmdHtml || escapeHtml(cmd);

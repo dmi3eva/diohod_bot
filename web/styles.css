@@ -180,6 +180,15 @@ html, body {
   gap: 10px;
 }
 
+.mission-block__text {
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.mission-desc__chunk {
+  display: inline;
+}
+
 .mission-desc__item {
   padding: 10px 12px;
   border-radius: 12px;
@@ -195,6 +204,13 @@ html, body {
 .mission-desc__note {
   border-color: rgba(110, 231, 255, 0.22);
   background: rgba(110, 231, 255, 0.08);
+}
+
+.mission-desc__chunk.mission-desc__alert,
+.mission-desc__chunk.mission-desc__note {
+  padding: 2px 6px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
 .mission-desc__code {
