@@ -139,7 +139,7 @@ function setActiveMission(missionId) {
     };
   } else {
     els.missionImg.style.display = "none";
-    els.missionImgPlaceholder.style.display = "block";
+    els.missionImgPlaceholder.style.display = "none";
   }
 }
 
