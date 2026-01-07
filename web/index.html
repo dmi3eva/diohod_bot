@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Пульт управления диоходом</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div class="header__title">Пульт управления диоходом</div>
+        <div class="header__actions">
+          <button id="helpBtn" class="btn btn--secondary" type="button">Справка</button>
+        </div>
+      </header>
+
+      <main class="main">
+        <aside class="sidebar">
+          <div class="sidebar__title">Миссии</div>
+          <div id="missionsList" class="missions"></div>
+        </aside>
+
+        <section class="content">
+          <div class="panel">
+            <div class="panel__title">Описание миссии</div>
+            <div id="missionText" class="panel__body panel__body--scroll"></div>
+            <div class="panel__media">
+              <img id="missionImg" class="mission-img" alt="Иллюстрация миссии" />
+              <div id="missionImgPlaceholder" class="mission-img__placeholder">
+                Иллюстрация для миссии отсутствует в репозитории
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="editor">
+          <div class="panel">
+            <div class="panel__title">Инструкции диоходу</div>
+            <div class="panel__body">
+              <textarea id="code" class="code" spellcheck="false" placeholder="Напишите программу...\n\nПримеры:\nmove()\nrotate()\nphoto()\nrepeat(4) { ... }"></textarea>
+              <div class="editor__actions">
+                <button id="startBtn" class="btn btn--primary" type="button">Запустить миссию</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <div id="modal" class="modal" aria-hidden="true">
+        <div class="modal__backdrop" data-close="true"></div>
+        <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+          <div class="modal__header">
+            <div id="modalTitle" class="modal__title"></div>
+            <button id="modalClose" class="modal__close" type="button" aria-label="Закрыть">✕</button>
+          </div>
+          <div id="modalBody" class="modal__body"></div>
+          <div class="modal__footer">
+            <button id="modalOk" class="btn btn--primary" type="button">Ок</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
