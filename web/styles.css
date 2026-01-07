@@ -228,6 +228,14 @@ html, body {
   white-space: nowrap;
 }
 
+.arg {
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px dashed rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.95);
+}
+
 .editor__actions {
   display: flex;
   justify-content: flex-end;

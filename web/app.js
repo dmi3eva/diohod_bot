@@ -65,13 +65,25 @@ const MISSIONS = [
 ];
 
 const HELP_COMMANDS = [
-  { cmd: "move()", desc: "шаг вперёд" },
-  { cmd: "rotate()", desc: "поворот на 90°" },
-  { cmd: "rotate(WEST)", desc: "поворот на запад" },
-  { cmd: "photo()", desc: "сделать снимок" },
-  { cmd: "pop()", desc: "удалить последний снимок" },
-  { cmd: "repeat(n) { ... }", desc: "повторить n раз" },
-  { cmd: "if last is ALIAS { ... } else { ... }", desc: "ветвление по последнему снимку" }
+  { cmd: "move()", cmdHtml: "move()", desc: "шаг вперёд" },
+  { cmd: "rotate()", cmdHtml: "rotate()", desc: "поворот на 90°" },
+  {
+    cmd: "rotate(WEST)",
+    cmdHtml: `rotate(<span class="arg">WEST</span>)`,
+    desc: "поворот на запад"
+  },
+  { cmd: "photo()", cmdHtml: "photo()", desc: "сделать снимок" },
+  { cmd: "pop()", cmdHtml: "pop()", desc: "удалить последний снимок" },
+  {
+    cmd: "repeat(n) { ... }",
+    cmdHtml: `repeat(<span class="arg">n</span>) { ... }`,
+    desc: "повторить n раз"
+  },
+  {
+    cmd: "if last is ALIAS { ... } else { ... }",
+    cmdHtml: `if last is <span class="arg">ALIAS</span> { ... } else { ... }`,
+    desc: "ветвление по последнему снимку"
+  }
 ];
 
 const els = {
@@ -105,8 +117,8 @@ function getHelpHtml() {
   return `
     <div style="display: flex; flex-wrap: wrap; gap: 8px;">
       ${HELP_COMMANDS.map(
-        ({ cmd, desc }) =>
-          `<span class="cmd">${escapeHtml(cmd)} <span style="opacity: 0.75; font-family: var(--sans);">— ${escapeHtml(
+        ({ cmdHtml, cmd, desc }) =>
+          `<span class="cmd">${cmdHtml || escapeHtml(cmd)} <span style="opacity: 0.75; font-family: var(--sans);">— ${escapeHtml(
             desc
           )}</span></span>`
       ).join("")}
