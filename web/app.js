@@ -97,6 +97,7 @@ const els = {
   missionImg: document.getElementById("missionImg"),
   missionImgPlaceholder: document.getElementById("missionImgPlaceholder"),
   code: document.getElementById("code"),
+  cheatSheet: document.getElementById("cheatSheet"),
   startBtn: document.getElementById("startBtn"),
   helpBtn: document.getElementById("helpBtn"),
   modal: document.getElementById("modal"),
@@ -230,9 +231,9 @@ function handleStart() {
                         <div style="position: absolute; top: 8px; left: 8px; padding: 2px 8px; border-radius: 999px; font-size: 12px; background: rgba(0,0,0,0.7); color: #ffffff;">${timeLabel}</div>
                         <img src="${src}" alt="${caption}" style="width: 100%; height: 110px; object-fit: contain; display: block; background: #ffffff;" />
                       </div>` : ""}
-                      <div style="padding: 8px; font-size: 12px; color: rgba(255,255,255,0.78);">
-                        <div style="margin-bottom: 4px; color: rgba(255,255,255,0.62);">${timeLabel}</div>
-                        <div>${caption}</div>
+                      <div style="padding: 8px; font-size: 12px; background: #ffffff; color: #111111;">
+                        <div style="margin-bottom: 4px; color: #333333;">${timeLabel}</div>
+                        <div style="color: #111111;">${caption}</div>
                       </div>
                     </div>
                   `;
@@ -290,6 +291,10 @@ function initModal() {
 function init() {
   renderMissions();
   initModal();
+
+  if (els.cheatSheet) {
+    els.cheatSheet.textContent = HELP_TEXT.trim();
+  }
 
   setActiveMission(activeMissionId);
 

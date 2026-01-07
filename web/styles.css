@@ -153,9 +153,9 @@ html, body {
 }
 
 .mission-img {
-  width: 25%;
+  width: 27%;
   height: auto;
-  margin: 0 auto;
+  margin: 0;
   border-radius: var(--radius-sm);
   border: 1px solid rgba(255, 255, 255, 0.12);
   display: none;
@@ -188,6 +188,32 @@ html, body {
 .code:focus {
   border-color: rgba(110, 231, 255, 0.35);
   box-shadow: 0 0 0 4px rgba(110, 231, 255, 0.08);
+}
+
+.cheatsheet {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.18);
+  max-height: 210px;
+  overflow: auto;
+}
+
+.cheatsheet__title {
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 650;
+  font-size: 12px;
+}
+
+.cheatsheet__body {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .editor__actions {
