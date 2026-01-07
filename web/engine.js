@@ -107,6 +107,9 @@ const DiohodEngine = (() => {
 
   function convertToLines(userProgram) {
     const program = preprocessBlock(userProgram);
+    if (program.length > 20000) {
+      throw new CompilationError("Программа слишком большая.");
+    }
     const sendCommands = program.match(/send/g);
     if (sendCommands && sendCommands.length > 1) {
       throw new CompilationError("Каждый диоход может послать фото только 1 раз.");
@@ -115,6 +118,9 @@ const DiohodEngine = (() => {
       .split("\n")
       .map(preprocessLine)
       .filter((l) => l.length > 0);
+    if (lines.length > 5000) {
+      throw new CompilationError("Программа слишком большая.");
+    }
     return lines;
   }
 
@@ -150,7 +156,7 @@ const DiohodEngine = (() => {
 
   function parseCycle(lines) {
     const hat = lines[0].replaceAll(" ", "").trim();
-    const m = hat.match(/^repeat\((\d*)\)\{?$/);
+    const m = hat.match(/^repeat\((\d+)\)\{?$/);
     if (!m) {
       throw new CompilationError(`Проблема в строке \`\`\`\"${hat}\"\`\`\``);
     }
@@ -172,6 +178,10 @@ const DiohodEngine = (() => {
     const { block: trueBlock, remain } = extractBlock(lines);
 
     if (remain.length > 0 && remain[0].trim().startsWith("else")) {
+      const elseHat = remain[0].trim();
+      if (!/^else\s*\{?$/.test(elseHat)) {
+        throw new CompilationError(`Проблема в строке \`\`\`\"${elseHat}\"\`\`\``);
+      }
       const { block: falseBlock, remain: remain2 } = extractBlock(remain);
       return { alias, trueBlock, falseBlock, remain: remain2 };
     }

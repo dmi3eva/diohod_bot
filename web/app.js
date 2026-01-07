@@ -170,6 +170,15 @@ function closeModal() {
   els.modalBody.innerHTML = "";
 }
 
+function setStartLoading(isLoading) {
+  els.startBtn.disabled = isLoading;
+  els.startBtn.textContent = isLoading ? "Выполняю…" : "Запустить миссию";
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function handleStart() {
   const mission = MISSIONS.find((m) => m.id === activeMissionId) ?? MISSIONS[0];
   const code = (els.code.value || "").trim();
@@ -182,11 +191,24 @@ function handleStart() {
     return;
   }
 
-  try {
-    const result = window.DiohodEngine.runMission({
-      missionId: activeMissionId,
-      program: code
-    });
+  if (code.length > 20000) {
+    openModal("Отчёт о полёте", "Программа слишком большая.");
+    return;
+  }
+
+  (async () => {
+    setStartLoading(true);
+    openModal(
+      "Отчёт о полёте",
+      "<div style=\"color: rgba(255,255,255,0.78);\">Выполняю программу…</div>"
+    );
+    await sleep(0);
+
+    try {
+      const result = window.DiohodEngine.runMission({
+        missionId: activeMissionId,
+        program: code
+      });
 
     const photos = Array.isArray(result.photos) ? result.photos : [];
     const gallery =
@@ -220,19 +242,22 @@ function handleStart() {
       ${gallery}
     `;
 
-    openModal("Отчёт о полёте", body);
-  } catch (err) {
-    const message = err && err.message ? String(err.message) : "Ошибка в программе";
-    const body = `
-      <div style="margin-bottom: 10px; color: rgba(255,255,255,0.7);">
-        Выбранная миссия: <span class="kbd">${escapeHtml(mission.title)}</span>
-      </div>
-      <pre style="white-space: pre-wrap; margin: 0; padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; background: rgba(0,0,0,0.18);">${escapeHtml(
-        message
-      )}</pre>
-    `;
-    openModal("Отчёт о полёте", body);
-  }
+      openModal("Отчёт о полёте", body);
+    } catch (err) {
+      const message = err && err.message ? String(err.message) : "Ошибка в программе";
+      const body = `
+        <div style="margin-bottom: 10px; color: rgba(255,255,255,0.7);">
+          Выбранная миссия: <span class="kbd">${escapeHtml(mission.title)}</span>
+        </div>
+        <pre style="white-space: pre-wrap; margin: 0; padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; background: rgba(0,0,0,0.18);">${escapeHtml(
+          message
+        )}</pre>
+      `;
+      openModal("Отчёт о полёте", body);
+    } finally {
+      setStartLoading(false);
+    }
+  })();
 }
 
 function initModal() {
