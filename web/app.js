@@ -220,7 +220,10 @@ function handleStart() {
                 .map((p, idx) => {
                   const src = p.img ? escapeHtml(p.img) : "";
                   const caption = escapeHtml(p.description || p.alias || "");
-                  const timeLabel = `t=${idx + 1}`;
+                  const seconds = idx + 1;
+                  const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
+                  const ss = String(seconds % 60).padStart(2, "0");
+                  const timeLabel = `${mm}:${ss}`;
                   return `
                     <div style="border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.18);">
                       ${src ? `<div style="position: relative; background: #ffffff;">
