@@ -116,6 +116,39 @@ function escapeHtml(s) {
     .replaceAll("'", "&#039;");
 }
 
+function highlightMissionText(html) {
+  let out = html;
+
+  out = out.replace(
+    /\b(move\(\)|photo\(\)|pop\(\)|rotate\([^)]*\)|repeat\(\d+\)|repeat\(n\)|if\s+last\s+is\s+[a-zA-Z0-9_]+|else)\b/g,
+    (m) => `<span class="mission-desc__code">${m}</span>`
+  );
+
+  out = out.replace(
+    /\((\s*-?\d+\s*,\s*-?\d+\s*)\)/g,
+    (m, inner) => `(<span class="mission-desc__coord">${inner}</span>)`
+  );
+
+  out = out.replace(/\b\d+\b/g, (m) => `<span class="mission-desc__num">${m}</span>`);
+
+  out = out.replace(
+    /\b(координат\w*|база\b|размер\w*|память\b|фотоаппарат\w*|ветер\b|динозавр\w*|опасно\b|осторожно\b|внимание\b)\b/gi,
+    (m) => `<span class="mission-desc__kw">${m}</span>`
+  );
+
+  out = out.replace(
+    /\b(север\w*|юг\w*|запад\w*|восток\w*)\b/gi,
+    (m) => `<span class="mission-desc__dir">${m}</span>`
+  );
+
+  out = out.replace(
+    /\b\d+\s+на\s+\d+\b/gi,
+    (m) => `<span class="mission-desc__size">${m}</span>`
+  );
+
+  return out;
+}
+
 function formatMissionText(text) {
   const raw = String(text || "").trim();
   if (!raw) return "";
@@ -127,7 +160,7 @@ function formatMissionText(text) {
 
   const items = paragraphs
     .map((p) => {
-      const escaped = escapeHtml(p);
+      const escaped = highlightMissionText(escapeHtml(p));
       const lower = p.toLowerCase();
 
       let cls = "";
@@ -165,12 +198,12 @@ function getHelpModalHtml() {
   const intro = `
     <div style="margin-bottom: 12px; color: rgba(255,255,255,0.86);">
       <div style="margin-bottom: 8px; font-weight: 700;">Как выполнять миссию</div>
-      <div style="color: rgba(255,255,255,0.78); line-height: 1.45;">
-        1) Выберите миссию слева.
-        <br />2) Напишите программу в поле справа (команды выполняются сверху вниз).
-        <br />3) Нажмите <span class="kbd">Запустить миссию</span>.
-        <br />4) В отчёте появится текст и «альбом» фотографий (в порядке съёмки).
-      </div>
+      <ul style="margin: 0; padding-left: 18px; color: rgba(255,255,255,0.78); line-height: 1.45; display: grid; gap: 6px;">
+        <li>Выберите миссию слева.</li>
+        <li>Напишите программу в поле справа (команды выполняются сверху вниз).</li>
+        <li>Нажмите <span class="kbd">Запустить миссию</span>.</li>
+        <li>В отчёте появится текст и «альбом» фотографий (в порядке съёмки).</li>
+      </ul>
     </div>
   `;
 
