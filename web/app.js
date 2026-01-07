@@ -217,13 +217,20 @@ function handleStart() {
             <div style="margin-bottom: 10px; color: rgba(255,255,255,0.75);">Фотографии:</div>
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;">
               ${photos
-                .map((p) => {
+                .map((p, idx) => {
                   const src = p.img ? escapeHtml(p.img) : "";
                   const caption = escapeHtml(p.description || p.alias || "");
+                  const timeLabel = `t=${idx + 1}`;
                   return `
                     <div style="border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.18);">
-                      ${src ? `<img src="${src}" alt="${caption}" style="width: 100%; height: 110px; object-fit: contain; display: block; background: rgba(0,0,0,0.22);" />` : ""}
-                      <div style="padding: 8px; font-size: 12px; color: rgba(255,255,255,0.78);">${caption}</div>
+                      ${src ? `<div style="position: relative; background: #ffffff;">
+                        <div style="position: absolute; top: 8px; left: 8px; padding: 2px 8px; border-radius: 999px; font-size: 12px; background: rgba(0,0,0,0.7); color: #ffffff;">${timeLabel}</div>
+                        <img src="${src}" alt="${caption}" style="width: 100%; height: 110px; object-fit: contain; display: block; background: #ffffff;" />
+                      </div>` : ""}
+                      <div style="padding: 8px; font-size: 12px; color: rgba(255,255,255,0.78);">
+                        <div style="margin-bottom: 4px; color: rgba(255,255,255,0.62);">${timeLabel}</div>
+                        <div>${caption}</div>
+                      </div>
                     </div>
                   `;
                 })
