@@ -174,20 +174,65 @@ function handleStart() {
   const mission = MISSIONS.find((m) => m.id === activeMissionId) ?? MISSIONS[0];
   const code = (els.code.value || "").trim();
 
-  const body = `
-    <div style="margin-bottom: 10px; color: rgba(255,255,255,0.7);">
-      Выбранная миссия: <span class="kbd">${escapeHtml(mission.title)}</span>
-    </div>
-    <div style="margin-bottom: 10px;">
-      Сейчас это только UI-версия без выполнения миссии.\n
-    </div>
-    <div style="margin-bottom: 10px; color: rgba(255,255,255,0.75);">
-      Ваш код (${code.length} символов):
-    </div>
-    <pre style="white-space: pre-wrap; margin: 0; padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; background: rgba(0,0,0,0.18);">${escapeHtml(code || "<пусто>")}</pre>
-  `;
+  if (!window.DiohodEngine || typeof window.DiohodEngine.runMission !== "function") {
+    openModal(
+      "Ошибка",
+      "Движок выполнения миссий не загружен. Обновите страницу или проверьте, что engine.js доступен."
+    );
+    return;
+  }
 
-  openModal("Отчёт о полёте (демо)", body);
+  try {
+    const result = window.DiohodEngine.runMission({
+      missionId: activeMissionId,
+      program: code
+    });
+
+    const photos = Array.isArray(result.photos) ? result.photos : [];
+    const gallery =
+      photos.length > 0
+        ? `<div style="margin-top: 12px;">
+            <div style="margin-bottom: 10px; color: rgba(255,255,255,0.75);">Фотографии:</div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;">
+              ${photos
+                .map((p) => {
+                  const src = p.img ? escapeHtml(p.img) : "";
+                  const caption = escapeHtml(p.description || p.alias || "");
+                  return `
+                    <div style="border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; overflow: hidden; background: rgba(0,0,0,0.18);">
+                      ${src ? `<img src="${src}" alt="${caption}" style="width: 100%; height: 110px; object-fit: contain; display: block; background: rgba(0,0,0,0.22);" />` : ""}
+                      <div style="padding: 8px; font-size: 12px; color: rgba(255,255,255,0.78);">${caption}</div>
+                    </div>
+                  `;
+                })
+                .join("")}
+            </div>
+          </div>`
+        : "";
+
+    const body = `
+      <div style="margin-bottom: 10px; color: rgba(255,255,255,0.7);">
+        Выбранная миссия: <span class="kbd">${escapeHtml(mission.title)}</span>
+      </div>
+      <pre style="white-space: pre-wrap; margin: 0; padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; background: rgba(0,0,0,0.18);">${escapeHtml(
+        (result.text || "").trim()
+      )}</pre>
+      ${gallery}
+    `;
+
+    openModal("Отчёт о полёте", body);
+  } catch (err) {
+    const message = err && err.message ? String(err.message) : "Ошибка в программе";
+    const body = `
+      <div style="margin-bottom: 10px; color: rgba(255,255,255,0.7);">
+        Выбранная миссия: <span class="kbd">${escapeHtml(mission.title)}</span>
+      </div>
+      <pre style="white-space: pre-wrap; margin: 0; padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; background: rgba(0,0,0,0.18);">${escapeHtml(
+        message
+      )}</pre>
+    `;
+    openModal("Отчёт о полёте", body);
+  }
 }
 
 function initModal() {
