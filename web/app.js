@@ -65,13 +65,13 @@ const MISSIONS = [
 ];
 
 const HELP_COMMANDS = [
-  "move()",
-  "rotate()",
-  "rotate(WEST)",
-  "photo()",
-  "pop()",
-  "repeat(n) { ... }",
-  "if last is ALIAS { ... } else { ... }"
+  { cmd: "move()", desc: "шаг вперёд" },
+  { cmd: "rotate()", desc: "поворот на 90°" },
+  { cmd: "rotate(WEST)", desc: "поворот на запад" },
+  { cmd: "photo()", desc: "сделать снимок" },
+  { cmd: "pop()", desc: "удалить последний снимок" },
+  { cmd: "repeat(n) { ... }", desc: "повторить n раз" },
+  { cmd: "if last is ALIAS { ... } else { ... }", desc: "ветвление по последнему снимку" }
 ];
 
 const els = {
@@ -104,7 +104,12 @@ function escapeHtml(s) {
 function getHelpHtml() {
   return `
     <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-      ${HELP_COMMANDS.map((c) => `<span class="cmd">${escapeHtml(c)}</span>`).join("")}
+      ${HELP_COMMANDS.map(
+        ({ cmd, desc }) =>
+          `<span class="cmd">${escapeHtml(cmd)} <span style="opacity: 0.75; font-family: var(--sans);">— ${escapeHtml(
+            desc
+          )}</span></span>`
+      ).join("")}
     </div>
   `;
 }
@@ -224,7 +229,6 @@ function handleStart() {
                           <img src="${src}" alt="${caption}" style="width: 100%; height: 110px; object-fit: contain; display: block; background: #ffffff;" />
                         </div>` : ""}
                         <div style="padding: 8px; font-size: 12px; background: #ffffff; color: #111111;">
-                          <div style="margin-bottom: 4px; color: #333333;">${timeLabel}</div>
                           <div style="color: #111111;">${caption}</div>
                         </div>
                       </div>
