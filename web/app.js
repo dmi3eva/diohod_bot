@@ -232,10 +232,10 @@ function getCheatSheetHtml() {
 function getHelpModalHtml() {
   const trainer = `
     <div style="margin-bottom: 12px; color: rgba(255,255,255,0.86);">
-      <div style="margin-bottom: 8px; font-weight: 800;">🛰️ Тренажёр</div>
+      <div class="help-h1">🛰️ Тренажёр</div>
 
       <div style="margin-bottom: 10px;">
-        <div style="margin-bottom: 8px; font-weight: 700;">🪐 Планеты</div>
+        <div class="help-h2">🪐 Планеты</div>
         <ul style="margin: 0; padding-left: 18px; color: rgba(255,255,255,0.78); line-height: 1.45; display: grid; gap: 6px;">
           <li>Каждая планета условно разделена на равные клеточки</li>
           <li>База на каждой планете находится всегда в одном месте</li>
@@ -247,7 +247,7 @@ function getHelpModalHtml() {
       </div>
 
       <div>
-        <div style="margin-bottom: 8px; font-weight: 700;">🤖 Диоход</div>
+        <div class="help-h2">🤖 Диоход</div>
         <ul style="margin: 0; padding-left: 18px; color: rgba(255,255,255,0.78); line-height: 1.45; display: grid; gap: 6px;">
           <li>Умеет передвигаться по клеточкам, соединенным сторонами. Один шаг – одна клеточка.</li>
           <li>Двигается вперед в направлении, куда смотрит его голова.</li>
@@ -265,7 +265,7 @@ function getHelpModalHtml() {
 
   const intro = `
     <div style="margin-bottom: 12px; color: rgba(255,255,255,0.86);">
-      <div style="margin-bottom: 8px; font-weight: 700;">✅ Как выполнять миссию</div>
+      <div class="help-h2">✅ Как выполнять миссию</div>
       <ul style="margin: 0; padding-left: 18px; color: rgba(255,255,255,0.78); line-height: 1.45; display: grid; gap: 6px;">
         <li>Выберите миссию слева.</li>
         <li>Напишите программу в поле справа (команды выполняются сверху вниз).</li>
@@ -277,7 +277,7 @@ function getHelpModalHtml() {
 
   const commands = `
     <div style="margin-top: 6px;">
-      <div style="margin-bottom: 8px; font-weight: 700;">⌨️ Команды</div>
+      <div class="help-h2">⌨️ Команды</div>
       <div style="display: grid; gap: 10px;">
         ${HELP_COMMANDS.map(({ cmdHtml, cmd, desc, details }) => {
           const left = cmdHtml || escapeHtml(cmd);
@@ -361,6 +361,29 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function getMissionLoaderHtml() {
+  return `
+    <div class="mission-loader">
+      <div class="mission-loader__scene">
+        <div class="loader-rocket">
+          <div class="loader-rocket__trail"></div>
+          <div class="loader-rocket__body"></div>
+        </div>
+        <div class="loader-rover">
+          <div class="loader-rover__scan"></div>
+          <div class="loader-rover__body">
+            <div class="loader-rover__wheel w1"></div>
+            <div class="loader-rover__wheel w2"></div>
+            <div class="loader-rover__wheel w3"></div>
+          </div>
+        </div>
+      </div>
+      <div class="mission-loader__caption">Выполняю миссию…</div>
+      <div class="mission-loader__caption" style="color: rgba(255,255,255,0.62); font-size: 12px;">Пожалуйста, подождите</div>
+    </div>
+  `;
+}
+
 function handleStart() {
   const mission = MISSIONS.find((m) => m.id === activeMissionId) ?? MISSIONS[0];
   const code = (els.code.value || "").trim();
@@ -382,11 +405,15 @@ function handleStart() {
     setStartLoading(true);
     openModal(
       "Отчёт о полёте",
-      "<div style=\"color: rgba(255,255,255,0.78);\">Выполняю программу…</div>"
+      getMissionLoaderHtml()
     );
     await sleep(0);
 
     try {
+      const minLoaderMs = 2600;
+
+      await sleep(minLoaderMs);
+
       const result = window.DiohodEngine.runMission({
         missionId: activeMissionId,
         program: code
