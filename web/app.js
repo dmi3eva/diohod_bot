@@ -65,24 +65,27 @@ const MISSIONS = [
 ];
 
 const HELP_COMMANDS = [
-  { cmd: "move()", cmdHtml: "move()", desc: "шаг вперёд" },
-  { cmd: "rotate()", cmdHtml: "rotate()", desc: "поворот на 90°" },
+  { cmd: "move()", cmdHtml: "move()", desc: "шаг вперёд", details: "Сдвигает диоход на 1 клетку в направлении, куда он смотрит." },
+  { cmd: "rotate()", cmdHtml: "rotate()", desc: "поворот на 90°", details: "Поворачивает диоход на 90° по часовой стрелке." },
   {
     cmd: "rotate(WEST)",
     cmdHtml: `rotate(<span class="arg">WEST</span>)`,
-    desc: "поворот на запад"
+    desc: "поворот на запад",
+    details: "Поворачивает диоход в заданную сторону. Вместо WEST можно использовать NORTH / EAST / SOUTH / WEST."
   },
-  { cmd: "photo()", cmdHtml: "photo()", desc: "сделать снимок" },
-  { cmd: "pop()", cmdHtml: "pop()", desc: "удалить последний снимок" },
+  { cmd: "photo()", cmdHtml: "photo()", desc: "сделать снимок", details: "Делает фото текущей клетки и сохраняет его в память диохода." },
+  { cmd: "pop()", cmdHtml: "pop()", desc: "удалить последний снимок", details: "Удаляет последнее сделанное фото из памяти (если нужно исправить результат)." },
   {
     cmd: "repeat(n) { ... }",
     cmdHtml: `repeat(<span class="arg">n</span>) { ... }`,
-    desc: "повторить n раз"
+    desc: "повторить n раз",
+    details: "Повторяет блок команд n раз. n — целое число."
   },
   {
     cmd: "if last is ALIAS { ... } else { ... }",
     cmdHtml: `if last is <span class="arg">ALIAS</span> { ... } else { ... }`,
-    desc: "ветвление по последнему снимку"
+    desc: "ветвление по последнему снимку",
+    details: "Если на последнем фото объект с псевдонимом ALIAS — выполняется первый блок, иначе — блок else."
   }
 ];
 
@@ -113,7 +116,7 @@ function escapeHtml(s) {
     .replaceAll("'", "&#039;");
 }
 
-function getHelpHtml() {
+function getCheatSheetHtml() {
   return `
     <div style="display: flex; flex-wrap: wrap; gap: 8px;">
       ${HELP_COMMANDS.map(
@@ -124,6 +127,43 @@ function getHelpHtml() {
       ).join("")}
     </div>
   `;
+}
+
+function getHelpModalHtml() {
+  const intro = `
+    <div style="margin-bottom: 12px; color: rgba(255,255,255,0.86);">
+      <div style="margin-bottom: 8px; font-weight: 700;">Как выполнять миссию</div>
+      <div style="color: rgba(255,255,255,0.78); line-height: 1.45;">
+        1) Выберите миссию слева.
+        <br />2) Напишите программу в поле справа (команды выполняются сверху вниз).
+        <br />3) Нажмите <span class="kbd">Запустить миссию</span>.
+        <br />4) В отчёте появится текст и «альбом» фотографий (в порядке съёмки).
+      </div>
+    </div>
+  `;
+
+  const commands = `
+    <div style="margin-top: 6px;">
+      <div style="margin-bottom: 8px; font-weight: 700;">Команды</div>
+      <div style="display: grid; gap: 10px;">
+        ${HELP_COMMANDS.map(({ cmdHtml, cmd, desc, details }) => {
+          const left = cmdHtml || escapeHtml(cmd);
+          const d = escapeHtml(details || desc || "");
+          return `
+            <div style="padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); background: rgba(0,0,0,0.18);">
+              <div style="margin-bottom: 6px;">
+                <span class="cmd">${left}</span>
+                <span style="margin-left: 8px; color: rgba(255,255,255,0.72);">— ${escapeHtml(desc || "")}</span>
+              </div>
+              <div style="color: rgba(255,255,255,0.80); line-height: 1.45;">${d}</div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+  `;
+
+  return `${intro}${commands}`;
 }
 
 function setActiveMission(missionId) {
@@ -302,7 +342,7 @@ function init() {
   initModal();
 
   if (els.cheatSheet) {
-    els.cheatSheet.innerHTML = getHelpHtml();
+    els.cheatSheet.innerHTML = getCheatSheetHtml();
   }
 
   setActiveMission(activeMissionId);
@@ -310,7 +350,7 @@ function init() {
   els.helpBtn.addEventListener("click", () => {
     openModal(
       "Справка",
-      `<div style="margin: 0; padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; background: rgba(0,0,0,0.18);">${getHelpHtml()}</div>`
+      `<div style="margin: 0; padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; background: rgba(0,0,0,0.18);">${getHelpModalHtml()}</div>`
     );
   });
 
