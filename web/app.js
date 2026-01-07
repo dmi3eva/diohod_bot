@@ -153,32 +153,66 @@ function formatMissionText(text) {
   const raw = String(text || "").trim();
   if (!raw) return "";
 
+  const bannedParagraphs = new Set([
+    "Не забудьте опубликовать новость.",
+    "Программу пишите прямо в сообщении."
+  ]);
+
   const paragraphs = raw
     .split(/\n\s*\n/g)
     .map((p) => p.trim())
-    .filter(Boolean);
+    .filter((p) => p.length > 0 && !bannedParagraphs.has(p));
 
-  const items = paragraphs
-    .map((p) => {
-      const escaped = highlightMissionText(escapeHtml(p));
-      const lower = p.toLowerCase();
+  const taskStarters = [
+    "сфотографируйте",
+    "определите",
+    "попробуйте",
+    "узнайте",
+    "обойдите",
+    "исследуйте",
+    "найдите",
+    "понять",
+    "постарайтесь"
+  ];
 
-      let cls = "";
-      if (
-        lower.startsWith("внимание") ||
-        lower.startsWith("осторожно") ||
-        lower.startsWith("опасно")
-      ) {
-        cls = "mission-desc__alert";
-      } else if (lower.startsWith("не забудьте") || lower.startsWith("имейте в виду")) {
-        cls = "mission-desc__note";
-      }
+  const descriptionItems = [];
+  const taskItems = [];
 
-      return `<li class="mission-desc__item ${cls}">${escaped}</li>`;
-    })
-    .join("");
+  for (const p of paragraphs) {
+    const lower = p.toLowerCase();
+    const escaped = highlightMissionText(escapeHtml(p));
 
-  return `<ul class="mission-desc">${items}</ul>`;
+    let cls = "";
+    if (
+      lower.startsWith("внимание") ||
+      lower.startsWith("осторожно") ||
+      lower.startsWith("опасно")
+    ) {
+      cls = "mission-desc__alert";
+    } else if (lower.startsWith("не забудьте") || lower.startsWith("имейте в виду")) {
+      cls = "mission-desc__note";
+    }
+
+    const isTask = taskStarters.some((s) => lower.startsWith(s));
+    const itemHtml = `<div class="mission-desc__item ${cls}">${escaped}</div>`;
+    (isTask ? taskItems : descriptionItems).push(itemHtml);
+  }
+
+  const descBlock =
+    descriptionItems.length > 0
+      ? `<div class="mission-block"><div class="mission-block__title">Описание</div><div class="mission-block__body">${descriptionItems.join(
+          ""
+        )}</div></div>`
+      : "";
+
+  const taskBlock =
+    taskItems.length > 0
+      ? `<div class="mission-block mission-block--task"><div class="mission-block__title">Задание</div><div class="mission-block__body">${taskItems.join(
+          ""
+        )}</div></div>`
+      : "";
+
+  return `<div class="mission-desc">${descBlock}${taskBlock}</div>`;
 }
 
 function getCheatSheetHtml() {

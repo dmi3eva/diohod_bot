@@ -149,12 +149,35 @@ html, body {
 }
 
 .mission-desc {
-  margin: 0;
-  padding-left: 18px;
   display: grid;
-  gap: 10px;
+  gap: 12px;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.88);
+}
+
+.mission-block {
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.mission-block--task {
+  border-color: rgba(110, 231, 255, 0.18);
+  background: rgba(110, 231, 255, 0.06);
+}
+
+.mission-block__title {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 750;
+}
+
+.mission-block__body {
+  padding: 10px 12px;
+  display: grid;
+  gap: 10px;
 }
 
 .mission-desc__item {
